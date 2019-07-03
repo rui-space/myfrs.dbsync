@@ -1,0 +1,20 @@
+[Unit]
+Description=database sync
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=/bin/sleep 5s
+#StartLimitInterval=10
+#StartLimitBurst=5
+User=lynxapp
+Group=lynxapp
+ExecStart=/opt/lynx/dbsync/dbsync >/opt/lynx/dbsync/nohup.out 2>/opt/lynx/dbsync/nohup.out
+ExecReload=/bin/kill -USR1 $MAINPID
+LimitNOFILE=1048576
+LimitNPROC=10240
+
+[Install]
+WantedBy=multi-user.target
+

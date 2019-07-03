@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Exit on error
+set -e
+
+case "$1" in 
+	configure)
+		# create lynxapp user if it isn't already there
+		if ! getent passwd lynxapp >/dev/null; then
+			useradd --no-create-home --shell /usr/sbin/nologin --system lynxapp
+		fi
+		
+		# set owner right
+		chown -R lynxapp:lynxapp /opt/lynx/dbsync
+		
+		# create log directory
+		if [ ! -d /var/log/lynx/ ]; then
+		  mkdir /var/log/lynx/
+		fi
+		if [ ! -d /var/log/lynx/dbsync ]; then
+		  mkdir /var/log/lynx/dbsync
+		fi
+		chown -R lynxapp:lynxapp /var/log/lynx
+		chmod -R 0755 /var/log/lynx
+		
+		# start the service
+		chown root:root /etc/systemd/system/dbsync.service
+		chmod 644 /etc/systemd/system/dbsync.service
+		systemctl daemon-reload
+		systemctl start dbsync.service
+		
+		# start service on boot
+		systemctl enable dbsync.service
+	;;
+esac
+
+exit 0

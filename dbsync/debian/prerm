@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Exit on error
+set -e
+
+case "$1" in 
+	remove|upgrade)
+		# stop the service
+#systemctl stop dbsync.service
+		# disable it from auto boot
+#		systemctl disable dbsync.service
+	;;
+esac
+
+exit 0

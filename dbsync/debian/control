@@ -1,0 +1,9 @@
+Package:dbsync
+Version:1.0.0
+Section:utils
+Priority:extra
+Maintainer:liruigang
+Depends:libmycpp, libjsoncpp, libodbc, libcurl, libssl
+Architecture:amd64
+Description:database sync
+
